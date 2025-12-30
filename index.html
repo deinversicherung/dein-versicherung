@@ -1,213 +1,45 @@
-:root{
-  --bg:#0b1220;
-  --text:#e8eefc;
-  --muted:#b9c4e6;
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="index,follow" />
+  <title>dein-versicherung – Inhalte</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
 
-  --panel:rgba(255,255,255,.03);
-  --border:rgba(255,255,255,.12);
-  --shadow:0 12px 40px rgba(0,0,0,.35);
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div class="brand">
+      <div class="brand-title">dein-versicherung</div>
+      <div class="brand-sub">Seite auswählen, URL ändert sich, Inhalt wird geladen.</div>
+    </div>
 
-  --accent:#7aa2ff;
+    <div class="nav">
+      <label class="nav-label" for="screenSelect">Seite:</label>
+      <select id="screenSelect" class="nav-select" aria-label="Seite auswählen">
+        <option value="" selected disabled>Seite auswählen…</option>
+      </select>
+    </div>
+  </div>
+</header>
 
-  --radius:16px;
-  --max:980px;
-}
+<main class="site-main">
+  <div class="wrap">
+    <section id="screen" class="screen" aria-live="polite">
+      <p class="placeholder">Bitte oben eine Seite auswählen.</p>
+    </section>
+  </div>
+</main>
 
-*{ box-sizing:border-box; }
-html,body{ height:100%; }
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>© <span id="year"></span></div>
+    <div class="muted">GitHub Pages</div>
+  </div>
+</footer>
 
-body{
-  margin:0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
-  background:
-    radial-gradient(1200px 600px at 15% 10%, rgba(122,162,255,.20), transparent 55%),
-    radial-gradient(900px 500px at 85% 20%, rgba(162,255,210,.12), transparent 60%),
-    var(--bg);
-  color:var(--text);
-  line-height:1.65;
-}
-
-a{ color:var(--accent); text-decoration:none; }
-a:hover{ text-decoration:underline; }
-
-.wrap{
-  max-width:var(--max);
-  margin:0 auto;
-  padding:0 20px;
-}
-
-/* ===== Header ===== */
-.site-header{
-  padding:28px 0 14px;
-}
-
-.header-inner{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:18px;
-  flex-wrap:wrap;
-
-  background: var(--panel);
-  border:1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding:18px 18px;
-}
-
-.brand-title{
-  font-size:18px;
-  font-weight:700;
-  letter-spacing:-0.01em;
-}
-
-.brand-sub{
-  margin-top:6px;
-  color:var(--muted);
-  font-size:13px;
-  max-width: 72ch;
-}
-
-/* ===== Nav (label + select) ===== */
-.nav{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.nav-label{
-  color:var(--muted);
-  font-size:14px;
-  white-space:nowrap;
-}
-
-/*
-  IMPORTANT:
-  Native select dropdown list on Windows ignores many option styles.
-  This makes the select itself light, so the dropdown list is also readable.
-*/
-.nav-select,
-#screenSelect{
-  color-scheme: light;
-
-  background:#ffffff !important;
-  color:#111111 !important;
-
-  border:1px solid rgba(0,0,0,.25) !important;
-  border-radius:12px;
-  padding:10px 14px;
-  font-size:14px;
-  min-width:260px;
-  cursor:pointer;
-  outline:none;
-
-  /* make it feel consistent with dark UI */
-  box-shadow: 0 6px 18px rgba(0,0,0,.25);
-}
-
-.nav-select:hover,
-#screenSelect:hover{
-  border-color: rgba(31,79,255,.65) !important;
-}
-
-.nav-select:focus,
-#screenSelect:focus{
-  border-color: rgba(31,79,255,.85) !important;
-  box-shadow:
-    0 6px 18px rgba(0,0,0,.25),
-    0 0 0 3px rgba(31,79,255,.18);
-}
-
-/* Keep option declarations (some browsers apply, some don't) */
-.nav-select option,
-#screenSelect option{
-  background:#ffffff !important;
-  color:#111111 !important;
-}
-
-/* Disabled placeholder option a bit muted */
-.nav-select option:disabled,
-#screenSelect option:disabled{
-  color:#666666 !important;
-}
-
-/* ===== Main ===== */
-.site-main{
-  padding:18px 0 44px;
-}
-
-.screen{
-  background: var(--panel);
-  border:1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding:22px 20px;
-  min-height: 360px;
-}
-
-.placeholder{
-  margin:0;
-  color:var(--muted);
-  font-size:14px;
-}
-
-/* Content inside injected fragments */
-.screen article{
-  margin:0;
-}
-
-.screen h2{
-  margin:0 0 10px;
-  font-size:22px;
-  letter-spacing:-0.01em;
-}
-
-.screen h3{
-  margin:24px 0 10px;
-  font-size:18px;
-  letter-spacing:-0.01em;
-}
-
-.screen p{ margin:10px 0; }
-
-.screen ul{
-  margin:10px 0 10px 20px;
-}
-
-.screen li{ margin:6px 0; }
-
-.screen hr{
-  border:none;
-  border-top:1px solid var(--border);
-  margin:22px 0;
-}
-
-/* ===== Footer ===== */
-.site-footer{
-  padding:12px 0 28px;
-  color:var(--muted);
-}
-
-.footer-inner{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
-
-  border-top:1px solid rgba(255,255,255,.08);
-  padding-top:14px;
-}
-
-.muted{
-  color:var(--muted);
-  font-size:13px;
-}
-
-/* ===== Responsive tweaks ===== */
-@media (max-width: 560px){
-  .nav-select, #screenSelect{ min-width: 100%; }
-  .header-inner{ padding:16px 14px; }
-  .screen{ padding:18px 16px; }
-}
+<script src="./app.js" defer></script>
+</body>
+</html>
