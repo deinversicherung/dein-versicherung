@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Redirect</title>
+  <script>
+    (function () {
+      var l = window.location;
+      // Giữ nguyên đường dẫn repo, chỉ chuyển về index.html và đính kèm route
+      var base = l.pathname.split('/').slice(0, -1).join('/') + '/';
+      var target = base + 'index.html?route=' + encodeURIComponent(l.pathname + l.search + l.hash);
+      l.replace(target);
+    })();
+  </script>
+</head>
+<body></body>
+</html>
