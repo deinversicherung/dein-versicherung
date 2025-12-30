@@ -6,49 +6,53 @@ document.addEventListener('DOMContentLoaded', function () {
   const screen = document.getElementById('screen');
   if (!select || !screen) return;
 
-  function normalizeToHtmlFile(nameOrFile) {
-    const s = String(nameOrFile || '');
-    return s.toLowerCase().endsWith('.html') ? s : (s + '.html');
+  let pages = [];
+
+  function safeDecode(s) {
+    try { return decodeURIComponent(s); } catch (_) { return s; }
   }
 
-  function getRequestedFileFromUrl() {
+  function getFileFromCurrentUrl() {
+    // Ưu tiên route từ 404.html -> index.html?route=...
     const url = new URL(window.location.href);
-
-    // Case 1: redirect từ 404.html -> index.html?route=/repo/Drohnen-Versicherung.html
     const route = url.searchParams.get('route');
+
+    const pickLast = (pathname) => {
+      const last = (pathname.split('/').pop() || '').trim();
+      if (!last || last.toLowerCase() === 'index.html') return '';
+      if (!last.toLowerCase().endsWith('.html')) return '';
+      return safeDecode(last);
+    };
+
     if (route) {
       try {
         const u = new URL(route, window.location.origin);
-        const last = u.pathname.split('/').pop() || '';
-        if (last && last !== 'index.html' && last.toLowerCase().endsWith('.html')) return last;
-      } catch (e) {}
+        const f = pickLast(u.pathname);
+        if (f) return f;
+      } catch (_) {}
     }
 
-    // Case 2: truy cập trực tiếp /.../Drohnen-Versicherung.html
-    const last = window.location.pathname.split('/').pop() || '';
-    if (last && last !== 'index.html' && last.toLowerCase().endsWith('.html')) return last;
-
-    return '';
+    return pickLast(window.location.pathname);
   }
 
   function setUrlToFile(file) {
-    // giữ cùng thư mục repo, chỉ đổi segment cuối
-    const basePath = window.location.pathname.replace(/[^/]*$/, '');
-    const newPath = basePath + file;
-    window.history.pushState({ file }, '', newPath);
+    // đổi segment cuối của URL trong cùng thư mục repo
+    const base = window.location.pathname.replace(/[^/]*$/, '');
+    const nextPath = base + encodeURIComponent(file).replace(/%2F/g, '/');
+    window.history.pushState({ file }, '', nextPath);
   }
 
-  async function loadPageFile(file) {
+  async function loadFragment(file) {
     if (!file) {
-      screen.innerHTML = '<p class="placeholder">Bitte wählen Sie oben eine Seite aus.</p>';
+      screen.innerHTML = '<p class="placeholder">Bitte oben eine Seite auswählen.</p>';
       return;
     }
 
     screen.innerHTML = `<p class="placeholder">Laden: pages/${file}</p>`;
 
     try {
-      const res = await fetch(`pages/${file}`, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`Die Seite pages/${file} konnte nicht geladen werden.`);
+      const res = await fetch(`pages/${encodeURIComponent(file)}`, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`Inhalt konnte nicht geladen werden: pages/${file}`);
       const html = await res.text();
       screen.innerHTML = html;
     } catch (err) {
@@ -57,73 +61,70 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function setDropdownSelected(file) {
-    const options = Array.from(select.options);
-    const idx = options.findIndex(o => (o.value || '').toLowerCase() === (file || '').toLowerCase());
-    if (idx >= 0) select.selectedIndex = idx;
+  function fillDropdown() {
+    // clear giữ option đầu
+    while (select.options.length > 1) select.remove(1);
+
+    const currentFile = getFileFromCurrentUrl();
+
+    pages.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.file;
+      opt.textContent = p.label;
+      if (currentFile && p.file.toLowerCase() === currentFile.toLowerCase()) opt.selected = true;
+      select.appendChild(opt);
+    });
+
+    if (currentFile) {
+      // Nếu vào từ index.html?route=..., dọn query trên thanh địa chỉ
+      const url = new URL(window.location.href);
+      if (url.searchParams.get('route')) {
+        setUrlToFile(currentFile);
+      }
+      loadFragment(currentFile);
+    } else {
+      loadFragment('');
+    }
   }
 
-  // Load menu từ pages.json
+  // Load pages.json
   fetch('pages.json', { cache: 'no-store' })
     .then(r => {
       if (!r.ok) throw new Error('pages.json konnte nicht geladen werden.');
       return r.json();
     })
     .then(data => {
-      if (!data || !Array.isArray(data.pages)) throw new Error('Ungültiges Format in pages.json.');
-
-      data.pages.forEach(item => {
-        const file = normalizeToHtmlFile(item);
-
-        const opt = document.createElement('option');
-        opt.value = file;
-
-        const labelBase = String(item).replace(/\.html$/i, '');
-        opt.textContent = labelBase
-          .split('-')
-          .map(w => (w ? w.charAt(0).toUpperCase() + w.slice(1) : ''))
-          .join(' ');
-
-        select.appendChild(opt);
-      });
-
-      // Nếu URL đang chỉ vào một file, auto load
-      const initialFile = getRequestedFileFromUrl();
-      if (initialFile) {
-        setDropdownSelected(initialFile);
-        loadPageFile(initialFile);
-
-        // Nếu đang ở index.html?route=..., dọn URL về /TênFile.html
-        const url = new URL(window.location.href);
-        if (url.searchParams.get('route')) {
-          setUrlToFile(initialFile);
-          url.searchParams.delete('route');
-        }
-      } else {
-        loadPageFile('');
-      }
+      if (!data || !Array.isArray(data.pages)) throw new Error('Ungültiges pages.json-Format.');
+      pages = data.pages.map(x => ({ label: x.label, file: x.file }));
+      fillDropdown();
     })
     .catch(err => {
       console.error(err);
       screen.innerHTML = `<p class="placeholder">${err.message}</p>`;
     });
 
-  // Dropdown change -> đổi URL + load nội dung
+  // Dropdown change: đổi URL thật + load fragment
   select.addEventListener('change', function () {
     const file = select.value;
     if (!file) return;
     setUrlToFile(file);
-    loadPageFile(file);
+    loadFragment(file);
   });
 
   // Back/Forward
   window.addEventListener('popstate', function () {
-    const file = getRequestedFileFromUrl();
+    const file = getFileFromCurrentUrl();
     if (file) {
-      setDropdownSelected(file);
-      loadPageFile(file);
+      // đồng bộ dropdown
+      for (const opt of select.options) {
+        if ((opt.value || '').toLowerCase() === file.toLowerCase()) {
+          opt.selected = true;
+          break;
+        }
+      }
+      loadFragment(file);
     } else {
-      loadPageFile('');
+      loadFragment('');
     }
   });
 });
