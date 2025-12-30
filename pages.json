@@ -1,7 +1,7 @@
 {
   "pages": [
-    "droneversicherung", 
-    "html2", 
-    "html3"
+    { "label": "Drohnen-Versicherung", "file": "droneversicherung.html" },
+    { "label": "Haftpflicht", "file": "Haftpflicht.html" },
+    { "label": "Kosten", "file": "Kosten.html" }
   ]
 }
