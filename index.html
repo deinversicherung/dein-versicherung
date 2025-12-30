@@ -4,43 +4,42 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="robots" content="index,follow" />
-  <title>Seitenanzeige</title>
-
+  <title>dein-versicherung – Inhalte</title>
   <link rel="stylesheet" href="./style.css" />
 </head>
-
 <body>
-  <header class="site-header">
-    <div class="wrap header-inner">
-      <div class="brand">
-        <div class="brand-title">Seitenanzeige</div>
-        <div class="brand-sub">Wähle eine Seite aus dem Menü, um den Inhalt anzuzeigen.</div>
-      </div>
 
-      <div class="nav">
-        <label class="nav-label" for="screenSelect">Seite:</label>
-        <select id="screenSelect" class="nav-select" aria-label="Seite auswählen">
-          <option value="" selected disabled>Seite auswählen…</option>
-        </select>
-      </div>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div class="brand">
+      <div class="brand-title">dein-versicherung</div>
+      <div class="brand-sub">Seite auswählen, URL ändert sich, Inhalt wird geladen.</div>
     </div>
-  </header>
 
-  <main class="site-main">
-    <div class="wrap">
-      <section id="screen" class="screen" aria-live="polite">
-        <div class="placeholder">Noch keine Seite ausgewählt.</div>
-      </section>
+    <div class="nav">
+      <label class="nav-label" for="screenSelect">Seite:</label>
+      <select id="screenSelect" class="nav-select" aria-label="Seite auswählen">
+        <option value="" selected disabled>Seite auswählen…</option>
+      </select>
     </div>
-  </main>
+  </div>
+</header>
 
-  <footer class="site-footer">
-    <div class="wrap footer-inner">
-      <div>© <span id="year"></span></div>
-      <div class="muted">GitHub Pages</div>
-    </div>
-  </footer>
+<main class="site-main">
+  <div class="wrap">
+    <section id="screen" class="screen" aria-live="polite">
+      <p class="placeholder">Bitte oben eine Seite auswählen.</p>
+    </section>
+  </div>
+</main>
 
-  <script src="./app.js" defer></script>
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>© <span id="year"></span></div>
+    <div class="muted">GitHub Pages</div>
+  </div>
+</footer>
+
+<script src="./app.js" defer></script>
 </body>
 </html>
