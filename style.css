@@ -43,3 +43,48 @@ body{
 }
 .placeholder{color:var(--muted)}
 .muted{color:var(--muted)}
+/* ===== FIX DROPDOWN VISIBILITY ===== */
+
+/* Select box */
+.nav-select,
+#screenSelect {
+  background-color: #0f1a2f;       /* nền tối */
+  color: #e8eefc;                  /* chữ sáng */
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  min-width: 240px;
+  cursor: pointer;
+}
+
+/* Hover / focus */
+.nav-select:hover,
+#screenSelect:hover,
+.nav-select:focus,
+#screenSelect:focus {
+  border-color: #7aa2ff;
+  outline: none;
+}
+
+/* OPTION LIST – phần quan trọng nhất */
+.nav-select option,
+#screenSelect option {
+  background-color: #ffffff;   /* nền TRẮNG để đọc rõ */
+  color: #111111;              /* chữ ĐEN */
+  font-size: 14px;
+}
+
+/* Option đang được chọn */
+.nav-select option:checked,
+#screenSelect option:checked {
+  background-color: #e6ecff;
+  color: #000000;
+}
+
+/* Option hover (một số browser hỗ trợ) */
+.nav-select option:hover,
+#screenSelect option:hover {
+  background-color: #dbe5ff;
+  color: #000000;
+}
