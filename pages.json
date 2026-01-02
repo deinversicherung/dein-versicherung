@@ -1,7 +1,7 @@
 {
   "pages": [
     { "label": "Drohnen-Versicherung", "file": "droneversicherung.html" },
-    { "label": "Haftpflicht", "file": "Haftpflicht.html" },
+    { "label": "Reisegepäckversicherung", "file": "reisegepackversicherung.html" },
     { "label": "Kosten", "file": "Kosten.html" }
   ]
 }
