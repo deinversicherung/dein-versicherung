@@ -2,6 +2,6 @@
   "pages": [
     { "label": "Drohnen-Versicherung", "file": "droneversicherung.html" },
     { "label": "Reisegepäckversicherung", "file": "reisegepackversicherung.html" },
-    { "label": "Kosten", "file": "Kosten.html" }
+    { "label": "Ambulante Zusatzversicherung", "file": "ambulantezusatzversicherung.html" }
   ]
 }
