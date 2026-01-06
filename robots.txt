@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://deinversicherung.github.io/dein-versicherung/sitemap.xml
